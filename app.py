@@ -21,9 +21,11 @@ def apientidades(filtro):
     # Set the path to the ChromeDriver executable
     chromedriver_path = os.path.join(os.path.dirname(__file__), 'chromedriver.exe')
 
-    # Initialize the Chrome webdriver with the path to the ChromeDriver executable
-    driver = webdriver.Chrome(executable_path=chromedriver_path)
+    # Initialize the Chrome webdriver service with the path to the ChromeDriver executable
+    service = Service(executable_path=chromedriver_path)
 
+    # Initialize the Chrome webdriver with the Chrome webdriver service
+    driver = webdriver.Chrome(service=service)
     driver.get('https://sanctionssearch.ofac.treas.gov')
 
     #We setup the name for the filter
@@ -73,7 +75,7 @@ def apientidades(filtro):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0',port=5000)
 
 
 
