@@ -10,13 +10,18 @@ from selectolax.parser import HTMLParser
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from flask import Flask,jsonify
+from flask import Flask,jsonify,request
 from selenium.common.exceptions import TimeoutException
+
 
 app = Flask(__name__)
 
-@app.route('/api/entidades/<filtro>',methods=['GET'])
-def apientidades(filtro):
+@app.route('/api/entidades',methods=['GET'])
+def apientidades():
+
+    # Get the "filtro" query parameter
+    filtro = request.args.get('query')
+
     # Check if the filter is empty
     if not filtro:
         return jsonify({'error': 'No se ha ingresado un filtro'}), 400
@@ -39,18 +44,21 @@ def apientidades(filtro):
     accept_button = driver.find_element(By.XPATH, '//input[@name="ctl00$MainContent$btnSearch"]').click()
 
     # Wait for the search results to appear on the page
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 9)
 
     # Parse the HTML content of the page using BeautifulSoup
     soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-    not_found = soup.find('span', attrs={'id': '//span[@id="ctl00_MainContent_lblMessage"]'})
+    found_none = soup.find('span', attrs={'id': '//span[@id="ctl00_MainContent_lblMessage"]'})
 
-    print(not_found)
 
-    if not not_found:
+    try:
+        wait.until(EC.visibility_of_element_located((By.XPATH, '//table[@id="gvSearchResults"]')))
+    except TimeoutException:
+        # No results were found
         driver.quit()
         return jsonify({'error': 'No se encontraron resultados para el filtro ingresado'}), 404
+        
 
     # Find the table that contains the data we want to scrape
     table = soup.find('table', attrs={'id': 'gvSearchResults'})
