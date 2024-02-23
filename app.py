@@ -16,8 +16,10 @@ app = Flask(__name__)
 
 @app.route('/api/entidades/<filtro>',methods=['GET'])
 def apientidades(filtro):
-    #We first setup de webdriver and go to the website
-    
+    #We check if the filter is empty
+    if filtro == '':
+        return jsonify({'error': 'No se ha ingresado un filtro'}), 400
+
     # Set the path to the ChromeDriver executable
     chromedriver_path = os.path.join(os.path.dirname(__file__), 'chromedriver.exe')
 
@@ -37,28 +39,18 @@ def apientidades(filtro):
 
     # We wait for the search results to appear on the page
     wait = WebDriverWait(driver, 10)
-    wait.until(EC.visibility_of_element_located((By.XPATH, '//table[@id="resultsHeaderTable"]')))
 
-    # We parse the HTML content of the page using BeautifulSoup
+    # Parse the HTML content of the page using BeautifulSoup
     soup = BeautifulSoup(driver.page_source, 'html.parser')
 
+    # Find the table that contains the data we want to scrape
+    table = soup.find('table', attrs={'id': 'gvSearchResults'})
 
-    #The next code serves to print the whole HTML content of the page in a format that is easier to read
-    '''
-    # We get the formatted HTML content of the page
-    formatted_html = soup.prettify()
+    if table is None:
+        # No results were found
+        driver.quit()
+        return jsonify({'error': 'No se encontraron resultados para el filtro ingresado'}), 404
 
-    # We split the formatted HTML content into smaller chunks
-    chunk_size = 1000
-    formatted_html_chunks = [formatted_html[i:i + chunk_size] for i in range(0, len(formatted_html), chunk_size)]
-
-    # We print each chunk of the formatted HTML content separately
-    for chunk in formatted_html_chunks:
-        print(chunk)
-    '''
-
-    #We find the table that contains the data we want to scrape
-    table = soup.find('table', attrs={'id': 'gvSearchResults'}).find('tbody').find_all('tr')
 
     entities = []
     for row in table:
