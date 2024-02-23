@@ -10,7 +10,8 @@ from selectolax.parser import HTMLParser
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-import flask
+from flask import Flask,jsonify
+
 
 
 
@@ -67,6 +68,16 @@ with open('entidades.json', 'w') as json_file:
 
 driver.quit()
 
+
+app = Flask(__name__)
+
+@app.route('/apientidades',methods=['GET'])
+def apientidades():
+    return jsonify(data)
+
+
+if __name__ == '__main__':
+    app.run(debug=True,port=5000,host="0.0.0.0")
 
 
 
