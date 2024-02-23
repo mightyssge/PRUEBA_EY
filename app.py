@@ -63,11 +63,6 @@ def apientidades():
     # Find the table that contains the data we want to scrape
     table = soup.find('table', attrs={'id': 'gvSearchResults'})
 
-    if not table:
-        # No results were found
-        driver.quit()
-        return jsonify({'error': 'No se encontraron resultados para el filtro ingresado 2 '}), 404
-
     entities = []
     for row in table.find('tbody').find_all('tr'):
         cells = row.find_all('td')
