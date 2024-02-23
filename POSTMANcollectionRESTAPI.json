@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "1daa040c-60c7-47a0-bdbc-fc76f3032afa",
+		"name": "POSTMAN-EYRESTAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33150055"
+	},
+	"item": [
+		{
+			"name": "RESTAPI GET normal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/entidades?query=china",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entidades"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "china"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RESTAPI GET error : No hay filtro",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/entidades?query=",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entidades"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RESTAPI GET error: No hay resultados",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/entidades?query=asdasfsadasf",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"entidades"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "asdasfsadasf"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
