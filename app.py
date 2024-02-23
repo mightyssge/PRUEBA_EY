@@ -11,13 +11,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from flask import Flask,jsonify
+from selenium.common.exceptions import TimeoutException
 
 app = Flask(__name__)
 
 @app.route('/api/entidades/<filtro>',methods=['GET'])
 def apientidades(filtro):
-    #We check if the filter is empty
-    if filtro == '':
+    # Check if the filter is empty
+    if not filtro:
         return jsonify({'error': 'No se ha ingresado un filtro'}), 400
 
     # Set the path to the ChromeDriver executable
@@ -30,37 +31,43 @@ def apientidades(filtro):
     driver = webdriver.Chrome(service=service)
     driver.get('https://sanctionssearch.ofac.treas.gov')
 
-    #We setup the name for the filter
-    
+    # Find the input field and send the filter
+    input_field = driver.find_element(By.XPATH, '//input[@name="ctl00$MainContent$txtLastName"]')
+    input_field.send_keys(filtro)
 
-    #We find the input field and send the filter and also we click the submit button to get all the data
-    input_field = driver.find_element(By.XPATH, '//input[@name="ctl00$MainContent$txtLastName"]').send_keys(filtro)
+    # Find and click the submit button
     accept_button = driver.find_element(By.XPATH, '//input[@name="ctl00$MainContent$btnSearch"]').click()
 
-    # We wait for the search results to appear on the page
+    # Wait for the search results to appear on the page
     wait = WebDriverWait(driver, 10)
 
     # Parse the HTML content of the page using BeautifulSoup
     soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-    # Find the table that contains the data we want to scrape
-    table = soup.find('table', attrs={'id': 'gvSearchResults'})
+    not_found = soup.find('span', attrs={'id': '//span[@id="ctl00_MainContent_lblMessage"]'})
 
-    if table is None:
-        # No results were found
+    print(not_found)
+
+    if not not_found:
         driver.quit()
         return jsonify({'error': 'No se encontraron resultados para el filtro ingresado'}), 404
 
+    # Find the table that contains the data we want to scrape
+    table = soup.find('table', attrs={'id': 'gvSearchResults'})
+
+    if not table:
+        # No results were found
+        driver.quit()
+        return jsonify({'error': 'No se encontraron resultados para el filtro ingresado 2 '}), 404
 
     entities = []
-    for row in table:
+    for row in table.find('tbody').find_all('tr'):
         cells = row.find_all('td')
         entities.append( [cell.get_text(strip=True) for cell in cells])
 
-
     data = [{'Name': entity[0], 'Address': entity[1], 'Type': entity[2], 'Program(s)': entity[3], 'List': entity[4], 'Score': entity[5]} for entity in entities]
 
-    #We close the webdriver
+    # Close the webdriver
     driver.quit()
     
     return jsonify(data)
@@ -68,9 +75,3 @@ def apientidades(filtro):
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5000)
-
-
-
-
-
-
