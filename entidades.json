@@ -1,0 +1,82 @@
+[
+    {
+        "Name": "AERO CONTINENTE (USA) INC.",
+        "Address": "",
+        "Type": "Entity",
+        "Program(s)": "SDNTK",
+        "List": "SDN",
+        "Score": "100"
+    },
+    {
+        "Name": "BEBIDAS USA INC.",
+        "Address": "4500 William Penn Highway",
+        "Type": "Entity",
+        "Program(s)": "GLOMAG",
+        "List": "SDN",
+        "Score": "100"
+    },
+    {
+        "Name": "BELNEFTEKHIM USA, INC.",
+        "Address": "13 Branch St., # 213",
+        "Type": "Entity",
+        "Program(s)": "BELARUS",
+        "List": "SDN",
+        "Score": "100"
+    },
+    {
+        "Name": "BIF-USA",
+        "Address": "Bashir Safar Ugli 69",
+        "Type": "Entity",
+        "Program(s)": "SDGT",
+        "List": "SDN",
+        "Score": "100"
+    },
+    {
+        "Name": "LA HACIENDA (USA), LLC",
+        "Address": "",
+        "Type": "Entity",
+        "Program(s)": "SDNTK",
+        "List": "SDN",
+        "Score": "100"
+    },
+    {
+        "Name": "MAGUS HOLDINGS USA, CORP.",
+        "Address": "4100 Salzedo St.; Unit 804",
+        "Type": "Entity",
+        "Program(s)": "VENEZUELA-EO13850",
+        "List": "SDN",
+        "Score": "100"
+    },
+    {
+        "Name": "RUNNING BROOK, LLC (USA)",
+        "Address": "",
+        "Type": "Entity",
+        "Program(s)": "SDNTK",
+        "List": "SDN",
+        "Score": "100"
+    },
+    {
+        "Name": "TABACOS USA INC.",
+        "Address": "4500 William Penn Highway",
+        "Type": "Entity",
+        "Program(s)": "GLOMAG",
+        "List": "SDN",
+        "Score": "100"
+    },
+    {
+        "Name": "TINDAYA PROPERTIES HOLDING USA CORP.",
+        "Address": "675 Third Avenue; 29th Floor",
+        "Type": "Entity",
+        "Program(s)": "VENEZUELA-EO13850",
+        "List": "SDN",
+        "Score": "100"
+    },
+    {
+        "Name": "USA REALLY",
+        "Address": "",
+        "Type": "Entity",
+        "Program(s)": "CYBER2",
+        "List": "SDN",
+        "Score": "100"
+    }
+]
