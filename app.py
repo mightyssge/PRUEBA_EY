@@ -17,7 +17,13 @@ app = Flask(__name__)
 @app.route('/api/entidades/<filtro>',methods=['GET'])
 def apientidades(filtro):
     #We first setup de webdriver and go to the website
-    driver = webdriver.Chrome()
+    
+    # Set the path to the ChromeDriver executable
+    chromedriver_path = os.path.join(os.path.dirname(__file__), 'chromedriver.exe')
+
+    # Initialize the Chrome webdriver with the path to the ChromeDriver executable
+    driver = webdriver.Chrome(executable_path=chromedriver_path)
+
     driver.get('https://sanctionssearch.ofac.treas.gov')
 
     #We setup the name for the filter
@@ -67,7 +73,7 @@ def apientidades(filtro):
 
 
 if __name__ == '__main__':
-    app.run(debug=True,port=5000,host="0.0.0.0")
+    app.run(debug=True)
 
 
 
