@@ -12,9 +12,11 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from flask import Flask,jsonify,request
 from selenium.common.exceptions import TimeoutException
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(app,origins=['http://localhost:3000'])
 
 @app.route('/api/entidades',methods=['GET'])
 def apientidades():
@@ -44,7 +46,7 @@ def apientidades():
     accept_button = driver.find_element(By.XPATH, '//input[@name="ctl00$MainContent$btnSearch"]').click()
 
     # Wait for the search results to appear on the page
-    wait = WebDriverWait(driver, 9)
+    wait = WebDriverWait(driver, 6)
 
     # Parse the HTML content of the page using BeautifulSoup
     soup = BeautifulSoup(driver.page_source, 'html.parser')
@@ -68,7 +70,7 @@ def apientidades():
         cells = row.find_all('td')
         entities.append( [cell.get_text(strip=True) for cell in cells])
 
-    data = [{'Name': entity[0], 'Address': entity[1], 'Type': entity[2], 'Program(s)': entity[3], 'List': entity[4], 'Score': entity[5]} for entity in entities]
+    data = [{'Name': entity[0], 'Address': entity[1], 'Type': entity[2], 'Program': entity[3], 'List': entity[4], 'Score': entity[5]} for entity in entities]
 
     # Close the webdriver
     driver.quit()
